@@ -13,10 +13,13 @@ public class Schedule {
     Schedule() {
         lessons = new Lesson[]{
                 new Lesson(0,new int[]{0,1,2,3,4,5},0, 0,0),
-                new Lesson(0,new int[]{0,1,2},0, 1,0),
-                new Lesson(1,new int[]{3,4,5},1, 2, 0),
+                new Lesson(0,new int[]{0,1},0, 1,0),
+                new Lesson(1,new int[]{3,4},1, 2, 0),
+                new Lesson(3,new int[]{2,5},1, 3, 0),
                 new Lesson(2,new int[]{0,1,2,3,4,5},3, 0, 1),
                 new Lesson(2,new int[]{0,1,2,3,4,5},2,0, 2),
+                new Lesson(3,new int[]{0,1,2},2,1, 1),
+                new Lesson(2,new int[]{3,4,5},2,2, 1),
         };
 
         rooms = new Room[]{
@@ -29,7 +32,8 @@ public class Schedule {
         teachers = new Teacher[]{
                 new Teacher("Ivan","Ivanenko","Ivanov"),
                 new Teacher("Petro", "Petrenko", "Petrov"),
-                new Teacher("Sydor", "Sydorenko", "Sydorov")
+                new Teacher("Sydor", "Sydorenko", "Sydorov"),
+                new Teacher("Vasyl", "Vasylenko", "Vasyliev")
         };
 
         students = new Student[]{
@@ -74,7 +78,7 @@ public class Schedule {
 
         @Override
         public String toString() {
-            return subjects[subjectId] + " " + teachers[teacherId];
+            return subjects[subjectId] + " - " + teachers[teacherId];
         }
     }
 

@@ -21,7 +21,7 @@ public class PrintSchedule {
     public String toString() {
         String res = "";
         for(int i = 0; i < lessons.length; i++){
-            res += Schedule.lessons[i].toString() + " " + Schedule.rooms[rooms[i]] + " " + getTime(time[i]);
+            res += (Schedule.lessons[i].groupId == 0 ? "Lecture" : ("Group " + Schedule.lessons[i].groupId)) + " - " + Schedule.lessons[i].toString() + " - " + Schedule.rooms[rooms[i]] + " - " + getTime(time[i]);
             res +='\n';
         }
         return res + "**********************";

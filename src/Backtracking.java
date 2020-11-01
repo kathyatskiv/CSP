@@ -127,9 +127,9 @@ public class Backtracking {
 
             if(fc && !forwardCheching(val,v)) return;
             switch (h){
-                case 0: backtracking(v+1, h, fc, lcv);break;
-                case 1: backtracking(mrv(), h, fc, lcv); break;
-                case 2: backtracking(degreeHeuristic(), h, fc, lcv); break;
+                case 0: backtracking(v+1, h, fc, true);break;
+                case 1: backtracking(mrv(), h, fc, true); break;
+                case 2: backtracking(degreeHeuristic(), h, fc, true); break;
             }
 
         }
