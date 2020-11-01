@@ -1,5 +1,3 @@
-import java.util.Vector;
-
 public class Backtracking {
     private int[] scheduleTime;
     private int[] scheduleRoom;
@@ -11,8 +9,6 @@ public class Backtracking {
 
     public int[][] adjacencyMatrix;
     private  int[][] timeAdjencyMatrix;
-
-    private int[][] schedules;
 
     Backtracking(Schedule.Lesson[] lessons, Schedule.Room[] rooms){
         this.lessons = new Schedule.Lesson[lessons.length];
@@ -106,7 +102,7 @@ public class Backtracking {
         return true;
     }
 
-    public void backtracking(int v, int h, boolean fc){
+    public void backtracking(int v, int h, boolean fc, boolean lcv){
         if(allVisited()){
             setTimeAdjencyMatrix();
 
@@ -114,8 +110,8 @@ public class Backtracking {
             return;
         }
 
-
-        if(h == 3){
+        visited[v] = true;
+        if(lcv){
             int maxNeightborVal = 0;
             int val = 0;
             for(int i = 0; i < Schedule.days*Schedule.spots; i++)
@@ -127,25 +123,28 @@ public class Backtracking {
                 }
 
             scheduleTime[v] = val;
-            visited[v] = true;
+
 
             if(fc && !forwardCheching(val,v)) return;
-            backtracking(v+1, h, fc);
+            switch (h){
+                case 0: backtracking(v+1, h, fc, lcv);break;
+                case 1: backtracking(mrv(), h, fc, lcv); break;
+                case 2: backtracking(degreeHeuristic(), h, fc, lcv); break;
+            }
 
         }
         else
             for(int i = 0; i < Schedule.days*Schedule.spots; i++){
                 if(checkVisited(i,v)){
                     scheduleTime[v] = i;
-                    visited[v] = true;
 
                     //System.out.println(forwardChecking);
                     if(fc && !forwardCheching(i,v)) return;
 
                     switch (h){
-                        case 0: backtracking(v+1, h, fc);break;
-                        case 1: backtracking(mrv(), h, fc); break;
-                        case 2: backtracking(degreeHeuristic(), h, fc); break;
+                        case 0: backtracking(v+1, h, fc, lcv);break;
+                        case 1: backtracking(mrv(), h, fc, lcv); break;
+                        case 2: backtracking(degreeHeuristic(), h, fc, lcv); break;
                     }
 
                 }

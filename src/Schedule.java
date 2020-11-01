@@ -81,9 +81,9 @@ public class Schedule {
     static class Teacher{
         public static int maxId = 0;
         public int id;
-        private String name;
-        private String surname;
-        private String middlename;
+        private final String name;
+        private final String surname;
+        private final String middlename;
 
         public String getName(){return name;}
         public String getSurname(){return surname;}
@@ -105,13 +105,13 @@ public class Schedule {
     static class Student{
         public static int maxId = 0;
         public int id;
-        private String name;
-        private String surname;
-        private String middlename;
+        private final String name;
+        private final String surname;
+        private final String middlename;
 
-        public String getName(){return name;}
-        public String getSurname(){return surname;}
-        public String getMiddlename(){return middlename;}
+        public final String getName(){return name;}
+        public final String getSurname(){return surname;}
+        public final String getMiddlename(){return middlename;}
 
         @Override
         public String toString() {
@@ -130,10 +130,10 @@ public class Schedule {
         public static int maxId=0;
         public static int defaultAmount = 50;
         public int id;
-        private int num;
-        private Character prefix;
-        private int building;
-        private int amount;
+        private final int num;
+        private final Character prefix;
+        private final int building;
+        private final int amount;
 
         public int getNum(){return num;}
         public Character getPrefix(){return prefix;}
