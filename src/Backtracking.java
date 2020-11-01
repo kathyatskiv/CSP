@@ -67,7 +67,6 @@ public class Backtracking {
         }
     }
 
-
     private void backtrackRooms(int v){
         if(allVisitedRooms()){
             PrintSchedule ps = new PrintSchedule(scheduleTime, scheduleRoom);
@@ -99,11 +98,7 @@ public class Backtracking {
         return true;
     }
 
-    public int[] getScheduleTime(){
-        return scheduleTime;
-    }
-
-    public void backtracking(int v){
+    public void backtracking(int v, int h){
         if(allVisited()){
             setTimeAdjencyMatrix();
 
@@ -113,15 +108,37 @@ public class Backtracking {
             backtrackRooms(0);
             return;
         }
-        for(int i = 0; i < Schedule.days*Schedule.spots; i++){
-            if(checkVisited(i,v)){
-                scheduleTime[v] = i;
-                visited[v] = true;
-                //backtracking(mrv());
-                backtracking(degreeHeuristic());
-                //backtracking(v+1);
-            }
+
+        if(h == 3){
+            int maxNeightborVal = 0;
+            int val = 0;
+            for(int i = 0; i < Schedule.days*Schedule.spots; i++)
+                if(checkVisited(i,v)){
+                    if(maxNeightborVal < lcv(i,v)){
+                        maxNeightborVal = lcv(i,v);
+                        val = i;
+                    }
+                }
+
+            scheduleTime[v] = val;
+            visited[v] = true;
+            backtracking(v+1, h);
+
         }
+        else
+            for(int i = 0; i < Schedule.days*Schedule.spots; i++){
+                if(checkVisited(i,v)){
+                    scheduleTime[v] = i;
+                    visited[v] = true;
+
+                    switch (h){
+                        case 0: backtracking(v+1, h);break;
+                        case 1: backtracking(mrv(), h); break;
+                        case 2: backtracking(degreeHeuristic(), h); break;
+                    }
+
+                }
+            }
 
     }
 
@@ -177,5 +194,23 @@ public class Backtracking {
 
         return minInd;
     }
+
+    //LCV
+    private int lcv(int t, int v){
+        int temp = scheduleTime[v];
+
+        int counter = 0;
+        scheduleTime[v] = t;
+        if(v == visited.length-1) return 0;
+        else{
+            for(int i = 0; i < Schedule.days*Schedule.spots; i++)
+                if(checkVisited(i,v+1)) counter++;
+        }
+
+        scheduleTime[v] = temp;
+        return counter;
+    }
+
+    //forward checking
 
 }
