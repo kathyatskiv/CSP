@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.Vector;
 
 public class Backtracking {
     private int[] scheduleTime;
@@ -33,6 +33,14 @@ public class Backtracking {
 
         scheduleTime = new int[lessons.length];
         scheduleRoom = new int[lessons.length];
+
+        forwardChecking = new int[lessons.length][Schedule.spots*Schedule.days];
+        for(int i = 0; i < lessons.length;i++)
+            for(int j =0; j < Schedule.days*Schedule.spots; j++)
+                forwardChecking[i][j] = j;
+
+
+
 
     }
 
@@ -98,16 +106,14 @@ public class Backtracking {
         return true;
     }
 
-    public void backtracking(int v, int h){
+    public void backtracking(int v, int h, boolean fc){
         if(allVisited()){
             setTimeAdjencyMatrix();
-
-//            for(int i = 0; i < timeAdjencyMatrix.length; i++)
-//            System.out.println(Arrays.toString(timeAdjencyMatrix[i]));
 
             backtrackRooms(0);
             return;
         }
+
 
         if(h == 3){
             int maxNeightborVal = 0;
@@ -122,7 +128,9 @@ public class Backtracking {
 
             scheduleTime[v] = val;
             visited[v] = true;
-            backtracking(v+1, h);
+
+            if(fc && !forwardCheching(val,v)) return;
+            backtracking(v+1, h, fc);
 
         }
         else
@@ -131,10 +139,13 @@ public class Backtracking {
                     scheduleTime[v] = i;
                     visited[v] = true;
 
+                    //System.out.println(forwardChecking);
+                    if(fc && !forwardCheching(i,v)) return;
+
                     switch (h){
-                        case 0: backtracking(v+1, h);break;
-                        case 1: backtracking(mrv(), h); break;
-                        case 2: backtracking(degreeHeuristic(), h); break;
+                        case 0: backtracking(v+1, h, fc);break;
+                        case 1: backtracking(mrv(), h, fc); break;
+                        case 2: backtracking(degreeHeuristic(), h, fc); break;
                     }
 
                 }
@@ -212,5 +223,21 @@ public class Backtracking {
     }
 
     //forward checking
+    int[][] forwardChecking;
+    boolean forwardCheching(int t, int v){
 
+            for(int i = 0; i < visited.length; i++)
+                if(adjacencyMatrix[v][i] == 1 && v!=i){
+                    forwardChecking[i][t] = -1;
+                    if(isFCEmpty(i)) return false;
+                }
+            return true;
+
+    }
+
+    boolean isFCEmpty(int v){
+        for(int i = 0; i < lessons.length; i++)
+            if(forwardChecking[v][i] != -1) return false;
+        return true;
+    }
 }
